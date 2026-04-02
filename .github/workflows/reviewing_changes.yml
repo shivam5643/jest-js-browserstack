@@ -21,7 +21,17 @@ jobs:
       max-parallel: 3
       matrix:
         node: ['14', '16', '18', '20']
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        os: [ubuntu-latest, windows-latest]
+        include:
+          # macOS: use macos-13 (Intel) for Node 14-16, macos-latest (arm64) for Node 18+
+          - os: macos-13
+            node: '14'
+          - os: macos-13
+            node: '16'
+          - os: macos-latest
+            node: '18'
+          - os: macos-latest
+            node: '20'
     name: Jest-js Repo ${{ matrix.node }} - ${{ matrix.os }} Sample
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
@@ -52,9 +62,13 @@ jobs:
               console.log('Failed to create check run')
             }
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+
+      - name: Install Node 14-compatible browserstack-node-sdk
+        if: matrix.node == '14'
+        run: npm install browserstack-node-sdk@1.26.7
 
       - name: Setup staging npm package
         if: ${{ github.event.inputs.package_url != '' }}
