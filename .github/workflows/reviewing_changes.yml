@@ -66,24 +66,28 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install Node 14-compatible browserstack-node-sdk
-        if: matrix.node == '14'
-        run: npm install browserstack-node-sdk@1.26.7
-
       - name: Setup staging npm package
         if: ${{ github.event.inputs.package_url != '' }}
         run: |
           echo 'Publishing tar.gz to local registry'
           curl -o staging_package.tgz "$PACKAGE_URL"
           npm install verdaccio@5.32.2 -g
-          verdaccio &
+          verdaccio > /tmp/verdaccio.log 2>&1 &
+          VERDACCIO_PID=$!
+          sleep 2
           npm config set registry http://localhost:4873
           npm install -g npm-cli-adduser && npm-cli-adduser -u dummy -p dummy -e dummy@gmail.com -r http://localhost:4873
           npm publish staging_package.tgz --registry http://localhost:4873/
+          kill $VERDACCIO_PID || true
         shell: bash
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies (Node 14 with legacy peer deps)
+        if: matrix.node == '14'
+        run: npm ci --legacy-peer-deps
+
+      - name: Install dependencies (Node 16+)
+        if: matrix.node != '14'
+        run: npm ci
 
       - name: Run sample tests
         run: npm run sample-test
