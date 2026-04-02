@@ -66,6 +66,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Install Node 14-compatible browserstack-node-sdk
+        if: matrix.node == '14'
+        run: npm install browserstack-node-sdk@1.26.7
+
       - name: Setup staging npm package
         if: ${{ github.event.inputs.package_url != '' }}
         run: |
@@ -80,10 +84,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Install Node 14-compatible browserstack-node-sdk
-        if: matrix.node == '14'
-        run: npm install --save-exact browserstack-node-sdk@1.26.7
 
       - name: Run sample tests
         run: npm run sample-test
