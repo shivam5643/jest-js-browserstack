@@ -17,9 +17,6 @@
     "browserstack-node-sdk": "latest",
     "jest": "^27.4.7"
   },
-  "engines": {
-    "node": ">=14"
-  },
   "dependencies": {
     "browserstack-local": "^1.4.8",
     "dotenv": "^16.0.0",
@@ -27,7 +24,6 @@
   },
   "scripts": {
     "sample-test": "browserstack-node-sdk jest src/sample.test.js",
-    "sample-local-test": "browserstack-node-sdk jest src/sample-local.test.js",
-    "postinstall": "npm update browserstack-node-sdk"
-  }
+    "sample-local-test": "browserstack-node-sdk jest src/sample-local.test.js"
+    }
 }
