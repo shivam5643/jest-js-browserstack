@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        node: ['14', '16', '18', '20']
+        node: ['14', '16', '18', '20', "24"]
         os: [ubuntu-latest, windows-latest]
         include:
           # macOS: use macos-latest (arm64) for Node 16, 18, 20
