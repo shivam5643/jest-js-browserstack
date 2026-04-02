@@ -21,16 +21,10 @@ jobs:
       max-parallel: 3
       matrix:
         node: ['14', '16', '18', '20', "24"]
-        os: [ubuntu-latest, windows-latest]
-        include:
-          # macOS: use macos-latest (arm64) for Node 16, 18, 20
-          # Note: Node 14 has no arm64 binary, so it's only tested on Ubuntu/Windows
-          - os: macos-latest
-            node: '16'
-          - os: macos-latest
-            node: '18'
-          - os: macos-latest
-            node: '20'
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        exclude:
+          - node: '14'
+            os: 'macos-latest'
     name: Jest-js Repo ${{ matrix.node }} - ${{ matrix.os }} Sample
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
