@@ -23,10 +23,10 @@ jobs:
         node: ['14', '16', '18', '20']
         os: [ubuntu-latest, windows-latest]
         include:
-          # macOS: use macos-13 (Intel) for Node 14-16, macos-latest (arm64) for Node 18+
-          - os: macos-13
+          # macOS: use macos-12 (Intel) for Node 14-16, macos-latest (arm64) for Node 18+
+          - os: macos-12
             node: '14'
-          - os: macos-13
+          - os: macos-12
             node: '16'
           - os: macos-latest
             node: '18'
